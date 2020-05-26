@@ -23,7 +23,7 @@ describe('Panels', () => {
     });
 
     test('No panels inside', () => {
-      expect(obj.getPanels().length).toEqual(3);
+      expect(obj.getPanels().length).toEqual(5);
     });
 
     test('Adds new panel correctly via object', () => {

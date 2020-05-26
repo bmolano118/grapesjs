@@ -4,6 +4,7 @@ const osm = 'open-sm';
 const otm = 'open-tm';
 const ola = 'open-layers';
 const obl = 'open-blocks';
+const oco = 'open-contents';
 const ful = 'fullscreen';
 const prv = 'preview';
 
@@ -14,6 +15,14 @@ export default {
   defaults: [
     {
       id: 'commands',
+      buttons: [{}]
+    },
+    {
+      id: 'actions',
+      buttons: [{}]
+    },
+    {
+      id: 'exports',
       buttons: [{}]
     },
     {
@@ -80,6 +89,13 @@ export default {
           command: obl,
           togglable: 0,
           attributes: { title: 'Open Blocks' }
+        },
+        {
+          id: oco,
+          className: 'fa fa-th-large',
+          command: oco,
+          togglable: 0,
+          attributes: { title: 'Open Contents' }
         }
       ]
     }

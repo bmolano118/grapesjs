@@ -19,10 +19,15 @@ $trt-prefix:        $app-prefix + 'trt-' !default;
   With this should be easier to overwrite colors
   not only in SCSS but even CSS
 */
-$primaryColor:      #444 !default;
-$secondaryColor:    #ddd !default;
+$primaryColor:      #122230 !default;
+$secondaryColor:    #b9a5a6 !default;
+$thirdColor:        #233749 !default;
 $tertiaryColor:     #804f7b !default;
 $quaternaryColor:   #d278c9 !default;
+$activeColor:       #273D4F !default;
+$inactiveColor:     #B11F18 !default;
+$enabledColor:      #F7F7F7 !default;
+$disabledColor:     #303d4a !default;
 
 /* Dark theme */
 $mainColor:         #444 !default; /* Light: #573454 Dark: #3b2639 -moz-linear-gradient(top, #fca99b 0%, #6e2842 100%) */
@@ -41,7 +46,10 @@ $colorGreen:        #62c462 !default;
 $tagBg:             #804f7b !default;
 $secColor:          $tagBg !default;
 $imageCompDim:      50px !default;
-$leftWidth:         15% !default;
+$leftWidth:         20% !default;
+$sidebarWidth:      53px !default;
+$topbarHeight:      60px !default;
+$sidebarRadius:     10px !default;
 
 /* Color Helpers */
 $colorHighlight:    #71b7f1 !default;

@@ -3,6 +3,12 @@
 @import "node_modules/codemirror/lib/codemirror";
 @import "node_modules/codemirror/theme/hopscotch";
 
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons+Outlined";
+@import "node_modules/material-icons/css/material-icons.min";
+.mi-outlined {
+  font-family: 'Material Icons Outlined';
+}
 
 @import "gjs_variables.scss";
 

@@ -318,6 +318,9 @@ export default {
   // Configurations for Block Manager
   blockManager: {},
 
+  // Configurations for Block Manager
+  contentManager: {},
+
   // Configurations for Trait Manager
   traitManager: {},
 

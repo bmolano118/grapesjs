@@ -4,6 +4,7 @@ import Buttons from './Buttons';
 export default Backbone.Model.extend({
   defaults: {
     id: '',
+    preSpace: false,
     content: '',
     visible: true,
     buttons: [],

@@ -4,7 +4,7 @@
     position: absolute;
     box-sizing: border-box;
     text-align: center;
-    padding: 5px;
+    padding: 15px;
     z-index: 3;
 
     .icon-undo,
@@ -16,7 +16,6 @@
   }
 
   &commands {
-    width: (100% - $leftWidth);
     left: 0;
     top: 0;
     box-shadow: 0 0 5px $mainDkColor;
@@ -28,18 +27,84 @@
   }
 
   &views {
-    border-bottom: 2px solid $mainDkColor;
+    height: 100%;
+    margin: $topbarHeight 0 0 0;
+    padding: 0;
     right: 0;
-    width: $leftWidth;
+    width: $sidebarWidth;
     z-index: 4;
+    background-color: $activeColor;
+    border-top-left-radius: $sidebarRadius;
+
+    .#{$pn-prefix}space {
+      height: 15px;
+      width: $sidebarWidth;
+      display: block;
+      background: $thirdColor;
+      border-top-left-radius: $sidebarRadius;
+    }
+
+    .#{$pn-prefix}buttons {
+      flex-direction: column;
+
+      .#{$pn-prefix}btn {
+        font-size: 10px;
+        color: white;
+        padding: 0;
+        margin: 0 0 1px 0;
+        border-radius: 0;
+        width: $sidebarWidth;
+        height: $sidebarWidth;
+        line-height: $sidebarWidth;
+        background-color: $inactiveColor;
+
+        &.#{$pn-prefix}active {
+          background-color: $activeColor;
+        }
+      }
+    }
 
     &-container {
       height: 100%;
-      padding: 42px 0 0;
+      padding: 0 $sidebarWidth 0 0;
+      margin: $topbarHeight 0 0 0;
       right: 0;
       width: $leftWidth;
       overflow: auto;
-      box-shadow: 0 0 5px $mainDkColor;
+    }
+  }
+
+  &devices-c {
+    left: 89%;
+  }
+
+  &actions {
+    right: 11%;
+  }
+
+  &exports {
+    right: $leftWidth;
+    top: 0;
+    margin-right: 100px;
+
+    .#{$pn-prefix}buttons {
+
+      .#{$pn-prefix}btn {
+        font-size: 11px;
+        color: $primaryColor;
+        padding: 0;
+        margin: 2px 0 2px 10px;
+        border-radius: 5px;
+        width: 100px;
+        height: 26px;
+        min-height: 26px;
+        line-height: 26px;
+        background-color: $enabledColor;
+
+        &.#{$pn-prefix}disabled {
+          background-color: $disabledColor;
+        }
+      }
     }
   }
 
@@ -53,19 +118,19 @@
     box-sizing: border-box;
     min-height: 30px;
     min-width: 30px;
-    line-height: 21px;
-    background-color: transparent;
+    line-height: 22px;
     border: none;
-    font-size: 18px;
+    font-size: 30px;
     margin-right: 5px;
     border-radius: 2px;
     padding: 4px;
     position: relative;
     cursor: pointer;
+    text-transform: uppercase;
+    color: white;
 
-    &.#{$pn-prefix}active {
-      background-color: rgba(0, 0, 0, 0.15);
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.25) inset;
+    &.#{$pn-prefix}disabled {
+      opacity: 40%;
     }
 
     svg {

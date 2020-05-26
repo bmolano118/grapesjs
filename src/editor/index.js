@@ -164,6 +164,8 @@ export default (config = {}) => {
         ['Assets', 'AssetManager'],
         'BlockManager',
         ['Blocks', 'BlockManager'],
+        'ContentManager',
+        ['Contents', 'ContentManager'],
         'TraitManager',
         ['Traits', 'TraitManager'],
         'SelectorManager',

@@ -52,6 +52,7 @@ export default () => {
       um.changeUndoType('add', {
         on(model, collection, options = {}) {
           if (options.avoidStore) return;
+          em.trigger('undo:add');
           return {
             object: collection,
             before: undefined,
@@ -63,13 +64,14 @@ export default () => {
       um.changeUndoType('remove', {
         on(model, collection, options = {}) {
           if (options.avoidStore) return;
+          em.trigger('undo:remove');
           return {
             object: collection,
             before: model,
             after: undefined,
             options: { ...options }
           };
-        }
+         }
       });
       const customUndoType = {
         on(object, value, opt = {}) {
@@ -103,7 +105,9 @@ export default () => {
         em.trigger('component:toggled change:canvasOffset')
       );
       ['undo', 'redo'].forEach(ev => um.on(ev, () => em.trigger(ev)));
-
+      um.on('all', () => 
+        em.trigger('undo:all')
+      );
       return this;
     },
 

@@ -34,7 +34,8 @@ const deps = [
   require('navigator'),
   require('canvas'),
   require('commands'),
-  require('block_manager')
+  require('block_manager'),
+  require('content_manager')
 ];
 
 const { Collection } = Backbone;

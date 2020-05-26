@@ -9,6 +9,7 @@ export default Backbone.View.extend({
     this.pfx = config.stylePrefix || '';
     this.ppfx = config.pStylePrefix || '';
     this.buttons = model.get('buttons');
+    this.preSpace = model.get('preSpace');
     this.className = this.pfx + 'panel';
     this.id = this.pfx + model.get('id');
     this.listenTo(model, 'change:appendContent', this.appendContent);
@@ -116,9 +117,16 @@ export default Backbone.View.extend({
 
   render() {
     const $el = this.$el;
+    const pfx = this.pfx;
     const ppfx = this.ppfx;
     const cls = `${this.className} ${this.id} ${ppfx}one-bg ${ppfx}two-color`;
     $el.addClass(cls);
+
+    if (this.preSpace) {
+      $el.append(`
+        <span class="${pfx}space"/>
+      `);
+    }
 
     if (this.buttons.length) {
       var buttons = new ButtonsView({
