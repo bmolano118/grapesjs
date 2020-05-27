@@ -3,8 +3,8 @@ export default {
   // With the empty value, nothing will be rendered
   appendTo: '',
 
-  // Append contents to canvas on click
+  // Append rowblks to canvas on click
   appendOnClick: 0,
 
-  contents: []
+  rowblks: []
 };

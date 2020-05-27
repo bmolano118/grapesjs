@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 import { isString, isObject, bindAll } from 'underscore';
-import ContentView from './ContentView';
+import RowblkView from './RowblkView';
 import CategoryView from './CategoryView';
 
 export default Backbone.View.extend({
@@ -11,9 +11,9 @@ export default Backbone.View.extend({
     this.renderedCategories = [];
     var ppfx = this.config.pStylePrefix || '';
     this.ppfx = ppfx;
-    this.noCatClass = `${ppfx}contents-no-cat`;
-    this.contentContClass = `${ppfx}contents-c`;
-    this.catsClass = `${ppfx}content-categories`;
+    this.noCatClass = `${ppfx}rowblks-no-cat`;
+    this.rowblkContClass = `${ppfx}rowblks-c`;
+    this.catsClass = `${ppfx}rowblk-categories`;
     const coll = this.collection;
     this.listenTo(coll, 'add', this.addTo);
     this.listenTo(coll, 'reset', this.render);
@@ -64,20 +64,20 @@ export default Backbone.View.extend({
   },
 
   /**
-   * Callback when content is on drag
+   * Callback when rowblk is on drag
    * @private
    */
   onDrag(e) {
     this.em.stopDefault();
-    this.em.trigger('content:drag:start', e);
+    this.em.trigger('rowblk:drag:start', e);
   },
 
   onMove(e) {
-    this.em.trigger('content:drag:move', e);
+    this.em.trigger('rowblk:drag:move', e);
   },
 
   /**
-   * Callback when content is dropped
+   * Callback when rowblk is dropped
    * @private
    */
   onDrop(model) {
@@ -90,7 +90,7 @@ export default Backbone.View.extend({
         model.set('activeOnRender', 0);
       }
 
-      em.trigger('content:drag:stop', model);
+      em.trigger('rowblk:drag:stop', model);
     }
   },
 
@@ -112,7 +112,7 @@ export default Backbone.View.extend({
   add(model, fragment) {
     const { config } = this;
     var frag = fragment || null;
-    var view = new ContentView(
+    var view = new RowblkView(
       {
         model,
         attributes: model.get('attributes')
@@ -166,37 +166,37 @@ export default Backbone.View.extend({
     return this.catsEl;
   },
 
-  getContentsEl() {
-    if (!this.contentsEl) {
-      this.contentsEl = this.el.querySelector(
-        `.${this.noCatClass} .${this.contentContClass}`
+  getRowblksEl() {
+    if (!this.rowblksEl) {
+      this.rowblksEl = this.el.querySelector(
+        `.${this.noCatClass} .${this.rowblkContClass}`
       );
     }
 
-    return this.contentsEl;
+    return this.rowblksEl;
   },
 
   append(el) {
-    let contents = this.getContentsEl();
-    contents && contents.appendChild(el);
+    let rowblks = this.getRowblksEl();
+    rowblks && rowblks.appendChild(el);
   },
 
   render() {
     const ppfx = this.ppfx;
     const frag = document.createDocumentFragment();
     this.catsEl = null;
-    this.contentsEl = null;
+    this.rowblksEl = null;
     this.renderedCategories = [];
     this.el.innerHTML = `
       <div class="${this.catsClass}"></div>
       <div class="${this.noCatClass}">
-        <div class="${this.contentContClass}"></div>
+        <div class="${this.rowblkContClass}"></div>
       </div>
     `;
 
     this.collection.each(model => this.add(model, frag));
     this.append(frag);
-    const cls = `${this.contentContClass}s ${ppfx}one-bg ${ppfx}two-color`;
+    const cls = `${this.rowblkContClass}s ${ppfx}one-bg ${ppfx}two-color`;
     this.$el.addClass(cls);
     return this;
   }

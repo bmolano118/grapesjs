@@ -31,7 +31,7 @@ export default Backbone.View.extend({
     let target, valid;
 
     // If there is a selected component, try first to append
-    // the content inside, otherwise, try to place it as a next sibling
+    // the rowblk inside, otherwise, try to place it as a next sibling
     if (selected) {
       valid = sorter.validTarget(selected.getEl(), content);
 
@@ -44,7 +44,7 @@ export default Backbone.View.extend({
       }
     }
 
-    // If no target found yet, try to append the content to the wrapper
+    // If no target found yet, try to append the rowblk to the wrapper
     if (!target) {
       const wrapper = em.getWrapper();
       valid = sorter.validTarget(wrapper.getEl(), content);
@@ -56,7 +56,7 @@ export default Backbone.View.extend({
   },
 
   /**
-   * Start content dragging
+   * Start rowblk dragging
    * @private
    */
   startDrag(e) {
@@ -85,11 +85,11 @@ export default Backbone.View.extend({
     // IE11 supports only 'text' data type
     ev.dataTransfer.setData('text', data);
     em.set('dragContent', content);
-    em.trigger('content:drag:start', model, ev);
+    em.trigger('rowblk:drag:start', model, ev);
   },
 
   handleDrag(ev) {
-    this.em.trigger('content:drag', this.model, ev);
+    this.em.trigger('rowblk:drag', this.model, ev);
   },
 
   handleDragEnd() {
@@ -119,21 +119,21 @@ export default Backbone.View.extend({
       dragContent: null
     });
 
-    em.trigger('content:drag:stop', result, model);
+    em.trigger('rowblk:drag:stop', result, model);
   },
 
   /**
-   * Drop content
+   * Drop rowblk
    * @private
    */
   endDrag(e) {
     off(document, 'mouseup', this.endDrag);
     const sorter = this.config.getSorter();
 
-    // After dropping the content in the canvas the mouseup event is not yet
+    // After dropping the rowblk in the canvas the mouseup event is not yet
     // triggerd on 'this.doc' and so clicking outside, the sorter, tries to move
     // things (throws false positives). As this method just need to drop away
-    // the content helper I use the trick of 'moved = 0' to void those errors.
+    // the rowblk helper I use the trick of 'moved = 0' to void those errors.
     sorter.moved = 0;
     sorter.endMove();
   },
@@ -143,9 +143,9 @@ export default Backbone.View.extend({
     const disable = model.get('disable');
     const attr = model.get('attributes') || {};
     const cls = attr.class || '';
-    const className = `${ppfx}content`;
+    const className = `${ppfx}rowblk`;
     const label =
-      (em && em.t(`contentManager.labels.${model.id}`)) || model.get('label');
+      (em && em.t(`rowblkManager.labels.${model.id}`)) || model.get('label');
     const render = model.get('render');
     const media = model.get('media');
     const clsAdd = disable ? `${className}--disable` : `${ppfx}four-color-h`;

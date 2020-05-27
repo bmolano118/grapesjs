@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
-import Content from './Content';
+import Rowblk from './Rowblk';
 
 export default Backbone.Collection.extend({
-  model: Content
+  model: Rowblk
 });

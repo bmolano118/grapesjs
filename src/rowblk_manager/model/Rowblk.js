@@ -9,11 +9,11 @@ export default Backbone.Model.extend({
     select: 0,
     // If true, all IDs of dropped component and its style will be changed
     resetId: 0,
-    // Content label
+    // Rowblk label
     label: '',
-    // Disable the drag of the content
+    // Disable the drag of the rowblk
     disable: 0,
-    // HTML string for the media of the content, eg. SVG icon, image, etc.
+    // HTML string for the media of the rowblk, eg. SVG icon, image, etc.
     media: '',
     content: '',
     category: '',

@@ -35,7 +35,7 @@ const deps = [
   require('canvas'),
   require('commands'),
   require('block_manager'),
-  require('content_manager')
+  require('rowblk_manager')
 ];
 
 const { Collection } = Backbone;

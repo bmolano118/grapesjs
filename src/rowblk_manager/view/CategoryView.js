@@ -7,7 +7,7 @@ export default Backbone.View.extend({
     <i class="<%= pfx %>caret-icon"></i>
     <%= label %>
   </div>
-  <div class="<%= pfx %>contents-c"></div>
+  <div class="<%= pfx %>rowblks-c"></div>
   `),
 
   events: {},
@@ -21,7 +21,7 @@ export default Backbone.View.extend({
     this.caretD = 'fa fa-caret-down';
     this.iconClass = `${pfx}caret-icon`;
     this.activeClass = `${pfx}open`;
-    this.className = `${pfx}content-category`;
+    this.className = `${pfx}rowblk-category`;
     this.events[`click .${pfx}title`] = 'toggle';
     this.listenTo(this.model, 'change:open', this.updateVisibility);
     this.delegateEvents();
@@ -35,13 +35,13 @@ export default Backbone.View.extend({
   open() {
     this.el.className = `${this.className} ${this.activeClass}`;
     this.getIconEl().className = `${this.iconClass} ${this.caretD}`;
-    this.getContentsEl().style.display = '';
+    this.getRowblksEl().style.display = '';
   },
 
   close() {
     this.el.className = this.className;
     this.getIconEl().className = `${this.iconClass} ${this.caretR}`;
-    this.getContentsEl().style.display = 'none';
+    this.getRowblksEl().style.display = 'none';
   },
 
   toggle() {
@@ -57,22 +57,22 @@ export default Backbone.View.extend({
     return this.iconEl;
   },
 
-  getContentsEl() {
-    if (!this.contentsEl) {
-      this.contentsEl = this.el.querySelector('.' + this.pfx + 'contents-c');
+  getRowblksEl() {
+    if (!this.rowblksEl) {
+      this.rowblksEl = this.el.querySelector('.' + this.pfx + 'rowblks-c');
     }
 
-    return this.contentsEl;
+    return this.rowblksEl;
   },
 
   append(el) {
-    this.getContentsEl().appendChild(el);
+    this.getRowblksEl().appendChild(el);
   },
 
   render() {
     const { em, el, $el, model } = this;
     const label =
-      em.t(`contentManager.categories.${model.id}`) || model.get('label');
+      em.t(`rowblkManager.categories.${model.id}`) || model.get('label');
     el.innerHTML = this.template({
       pfx: this.pfx,
       label

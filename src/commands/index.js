@@ -51,7 +51,7 @@ export default () => {
     ['open-styles', 'OpenStyleManager', 'open-sm'],
     ['open-traits', 'OpenTraitManager', 'open-tm'],
     ['open-blocks', 'OpenBlocks', 'open-blocks'],
-    ['open-contents', 'OpenContents', 'open-contents'],
+    ['open-row-blocks', 'OpenRowBlks', 'open-row-blocks'],
     ['open-assets', 'OpenAssets', 'open-assets'],
     ['component-select', 'SelectComponent', 'select-comp'],
     ['component-outline', 'SwitchVisibility', 'sw-visibility'],

@@ -505,6 +505,7 @@ export default () => {
       var subWinOffset = opts.subWinOffset;
       var doc = e.target.ownerDocument;
       var win = doc.defaultView || doc.parentWindow;
+      console.log('win', win)
       var frame = win.frameElement;
       var yOffset = subWinOffset ? win.pageYOffset : 0;
       var xOffset = subWinOffset ? win.pageXOffset : 0;
