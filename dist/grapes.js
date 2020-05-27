@@ -23003,6 +23003,7 @@ var _window = window,
       var subWinOffset = opts.subWinOffset;
       var doc = e.target.ownerDocument;
       var win = doc.defaultView || doc.parentWindow;
+      console.log('win', win);
       var frame = win.frameElement;
       var yOffset = subWinOffset ? win.pageYOffset : 0;
       var xOffset = subWinOffset ? win.pageXOffset : 0;
@@ -25249,7 +25250,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
   var commands = {};
   var defaultCommands = {};
   var active = {};
-  var commandsDef = [['preview', 'Preview', 'preview'], ['resize', 'Resize', 'resize'], ['fullscreen', 'Fullscreen', 'fullscreen'], ['copy', 'CopyComponent'], ['paste', 'PasteComponent'], ['canvas-move', 'CanvasMove'], ['canvas-clear', 'CanvasClear'], ['open-code', 'ExportTemplate', 'export-template'], ['open-layers', 'OpenLayers', 'open-layers'], ['open-styles', 'OpenStyleManager', 'open-sm'], ['open-traits', 'OpenTraitManager', 'open-tm'], ['open-blocks', 'OpenBlocks', 'open-blocks'], ['open-contents', 'OpenContents', 'open-contents'], ['open-assets', 'OpenAssets', 'open-assets'], ['component-select', 'SelectComponent', 'select-comp'], ['component-outline', 'SwitchVisibility', 'sw-visibility'], ['component-offset', 'ShowOffset', 'show-offset'], ['component-move', 'MoveComponent', 'move-comp'], ['component-next', 'ComponentNext'], ['component-prev', 'ComponentPrev'], ['component-enter', 'ComponentEnter'], ['component-exit', 'ComponentExit', 'select-parent'], ['component-delete', 'ComponentDelete'], ['component-style-clear', 'ComponentStyleClear'], ['component-drag', 'ComponentDrag']]; // Need it here as it would be used below
+  var commandsDef = [['preview', 'Preview', 'preview'], ['resize', 'Resize', 'resize'], ['fullscreen', 'Fullscreen', 'fullscreen'], ['copy', 'CopyComponent'], ['paste', 'PasteComponent'], ['canvas-move', 'CanvasMove'], ['canvas-clear', 'CanvasClear'], ['open-code', 'ExportTemplate', 'export-template'], ['open-layers', 'OpenLayers', 'open-layers'], ['open-styles', 'OpenStyleManager', 'open-sm'], ['open-traits', 'OpenTraitManager', 'open-tm'], ['open-blocks', 'OpenBlocks', 'open-blocks'], ['open-row-blocks', 'OpenRowblks', 'open-row-blocks'], ['open-assets', 'OpenAssets', 'open-assets'], ['component-select', 'SelectComponent', 'select-comp'], ['component-outline', 'SwitchVisibility', 'sw-visibility'], ['component-offset', 'ShowOffset', 'show-offset'], ['component-move', 'MoveComponent', 'move-comp'], ['component-next', 'ComponentNext'], ['component-prev', 'ComponentPrev'], ['component-enter', 'ComponentEnter'], ['component-exit', 'ComponentExit', 'select-parent'], ['component-delete', 'ComponentDelete'], ['component-style-clear', 'ComponentStyleClear'], ['component-drag', 'ComponentDrag']]; // Need it here as it would be used below
 
   var add = function add(id, obj) {
     if (Object(underscore__WEBPACK_IMPORTED_MODULE_2__["isFunction"])(obj)) obj = {
@@ -25684,10 +25685,10 @@ var map = {
 	"./OpenAssets.js": "./src/commands/view/OpenAssets.js",
 	"./OpenBlocks": "./src/commands/view/OpenBlocks.js",
 	"./OpenBlocks.js": "./src/commands/view/OpenBlocks.js",
-	"./OpenContents": "./src/commands/view/OpenContents.js",
-	"./OpenContents.js": "./src/commands/view/OpenContents.js",
 	"./OpenLayers": "./src/commands/view/OpenLayers.js",
 	"./OpenLayers.js": "./src/commands/view/OpenLayers.js",
+	"./OpenRowblks": "./src/commands/view/OpenRowblks.js",
+	"./OpenRowblks.js": "./src/commands/view/OpenRowblks.js",
 	"./OpenStyleManager": "./src/commands/view/OpenStyleManager.js",
 	"./OpenStyleManager.js": "./src/commands/view/OpenStyleManager.js",
 	"./OpenTraitManager": "./src/commands/view/OpenTraitManager.js",
@@ -27298,42 +27299,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/commands/view/OpenContents.js":
-/*!*******************************************!*\
-  !*** ./src/commands/view/OpenContents.js ***!
-  \*******************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  run: function run(editor, sender) {
-    var bm = editor.ContentManager;
-    var pn = editor.Panels;
-
-    if (!this.contents) {
-      bm.render();
-      var id = 'views-container';
-      var contents = document.createElement('div');
-      var panels = pn.getPanel(id) || pn.addPanel({
-        id: id
-      });
-      contents.appendChild(bm.getContainer());
-      panels.set('appendContent', contents).trigger('change:appendContent');
-      this.contents = contents;
-    }
-
-    this.contents.style.display = 'block';
-  },
-  stop: function stop() {
-    var contents = this.contents;
-    contents && (contents.style.display = 'none');
-  }
-});
-
-/***/ }),
-
 /***/ "./src/commands/view/OpenLayers.js":
 /*!*****************************************!*\
   !*** ./src/commands/view/OpenLayers.js ***!
@@ -27370,6 +27335,42 @@ var $ = backbone__WEBPACK_IMPORTED_MODULE_0___default.a.$;
   stop: function stop() {
     var layers = this.layers;
     layers && (layers.style.display = 'none');
+  }
+});
+
+/***/ }),
+
+/***/ "./src/commands/view/OpenRowblks.js":
+/*!******************************************!*\
+  !*** ./src/commands/view/OpenRowblks.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  run: function run(editor, sender) {
+    var rm = editor.RowblkManager;
+    var pn = editor.Panels;
+
+    if (!this.rowblks) {
+      rm.render();
+      var id = 'views-container';
+      var rowblks = document.createElement('div');
+      var panels = pn.getPanel(id) || pn.addPanel({
+        id: id
+      });
+      rowblks.appendChild(rm.getContainer());
+      panels.set('appendContent', rowblks).trigger('change:appendContent');
+      this.rowblks = rowblks;
+    }
+
+    this.rowblks.style.display = 'block';
+  },
+  stop: function stop() {
+    var rowblks = this.rowblks;
+    rowblks && (rowblks.style.display = 'none');
   }
 });
 
@@ -28911,886 +28912,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   }
 });
-
-/***/ }),
-
-/***/ "./src/content_manager/config/config.js":
-/*!**********************************************!*\
-  !*** ./src/content_manager/config/config.js ***!
-  \**********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ({
-  // Specify the element to use as a container, string (query) or HTMLElement
-  // With the empty value, nothing will be rendered
-  appendTo: '',
-  // Append contents to canvas on click
-  appendOnClick: 0,
-  contents: []
-});
-
-/***/ }),
-
-/***/ "./src/content_manager/index.js":
-/*!**************************************!*\
-  !*** ./src/content_manager/index.js ***!
-  \**************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
-/* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config/config */ "./src/content_manager/config/config.js");
-/* harmony import */ var _model_Contents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./model/Contents */ "./src/content_manager/model/Contents.js");
-/* harmony import */ var _model_Categories__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/Categories */ "./src/content_manager/model/Categories.js");
-/* harmony import */ var _view_ContentsView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./view/ContentsView */ "./src/content_manager/view/ContentsView.js");
-
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-/**
- * You can customize the initial state of the module from the editor initialization, by passing the following [Configuration Object](https://github.com/artf/grapesjs/blob/master/src/content_manager/config/config.js)
- * ```js
- * const editor = grapesjs.init({
- *  contentManager: {
- *    // options
- *  }
- * })
- * ```
- *
- * Once the editor is instantiated you can use its API. Before using these methods you should get the module from the instance
- *
- * ```js
- * const contentManager = editor.ContentManager;
- * ```
- * * [add](#add)
- * * [get](#get)
- * * [getAll](#getall)
- * * [getAllVisible](#getallvisible)
- * * [remove](#remove)
- * * [getConfig](#getconfig)
- * * [getCategories](#getcategories)
- * * [getContainer](#getcontainer)
- * * [render](#render)
- *
- * @module ContentManager
- */
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = (function () {
-  var c = {};
-  var contents, contentsVisible, contentsView;
-  var categories = [];
-  return {
-    /**
-     * Name of the module
-     * @type {String}
-     * @private
-     */
-    name: 'ContentManager',
-
-    /**
-     * Initialize module. Automatically called with a new instance of the editor
-     * @param {Object} config Configurations
-     * @return {this}
-     * @private
-     */
-    init: function init(config) {
-      c = config || {};
-      var em = c.em;
-
-      for (var name in _config_config__WEBPACK_IMPORTED_MODULE_2__["default"]) {
-        if (!(name in c)) {
-          c[name] = _config_config__WEBPACK_IMPORTED_MODULE_2__["default"][name];
-        }
-      } // Global contents collection
-
-
-      contents = new _model_Contents__WEBPACK_IMPORTED_MODULE_3__["default"]([]);
-      contentsVisible = new _model_Contents__WEBPACK_IMPORTED_MODULE_3__["default"]([]);
-      categories = new _model_Categories__WEBPACK_IMPORTED_MODULE_4__["default"]();
-      contentsView = new _view_ContentsView__WEBPACK_IMPORTED_MODULE_5__["default"]({
-        collection: contentsVisible,
-        categories: categories
-      }, c); // Setup the sync between the global and public collections
-
-      contents.listenTo(contents, 'add', function (model) {
-        contentsVisible.add(model);
-        em && em.trigger('content:add', model);
-      });
-      contents.listenTo(contents, 'remove', function (model) {
-        contentsVisible.remove(model);
-        em && em.trigger('content:remove', model);
-      });
-      contents.listenTo(contents, 'reset', function (coll) {
-        contentsVisible.reset(coll.models);
-      });
-      return this;
-    },
-
-    /**
-     * Get configuration object
-     * @return {Object}
-     */
-    getConfig: function getConfig() {
-      return c;
-    },
-
-    /**
-     * Load default contents if the collection is empty
-     */
-    onLoad: function onLoad() {
-      var contents = this.getAll();
-      !contents.length && contents.reset(c.contents);
-    },
-    postRender: function postRender() {
-      var elTo = this.getConfig().appendTo;
-
-      if (elTo) {
-        var el = Object(underscore__WEBPACK_IMPORTED_MODULE_1__["isElement"])(elTo) ? elTo : document.querySelector(elTo);
-        el.appendChild(this.render());
-      }
-    },
-
-    /**
-     * Add new content to the collection.
-     * @param {string} id Content id
-     * @param {Object} opts Options
-     * @param {string} opts.label Name of the content
-     * @param {string} opts.content HTML content
-     * @param {string|Object} opts.category Group the content inside a catgegory.
-     *                                      You should pass objects with id property, eg:
-     *                                      {id: 'some-uid', label: 'My category'}
-     *                                      The string will be converted in:
-     *                                      'someid' => {id: 'someid', label: 'someid'}
-     * @param {Object} [opts.attributes={}] Content attributes
-     * @return {Content} Added content
-     * @example
-     * contentManager.add('h1-content', {
-     *   label: 'Heading',
-     *   content: '<h1>Put your title here</h1>',
-     *   category: 'Basic',
-     *   attributes: {
-     *     title: 'Insert h1 content'
-     *   }
-     * });
-     */
-    add: function add(id, opts) {
-      var obj = opts || {};
-      obj.id = id;
-      return contents.add(obj);
-    },
-
-    /**
-     * Return the content by id
-     * @param  {string} id Content id
-     * @example
-     * const content = contentManager.get('h1-content');
-     * console.log(JSON.stringify(content));
-     * // {label: 'Heading', content: '<h1>Put your ...', ...}
-     */
-    get: function get(id) {
-      return contents.get(id);
-    },
-
-    /**
-     * Return all contents
-     * @return {Collection}
-     * @example
-     * const contents = contentManager.getAll();
-     * console.log(JSON.stringify(contents));
-     * // [{label: 'Heading', content: '<h1>Put your ...'}, ...]
-     */
-    getAll: function getAll() {
-      return contents;
-    },
-
-    /**
-     * Return the visible collection, which containes contents actually rendered
-     * @return {Collection}
-     */
-    getAllVisible: function getAllVisible() {
-      return contentsVisible;
-    },
-
-    /**
-     * Remove a content by id
-     * @param {string} id Content id
-     * @return {Content} Removed content
-     */
-    remove: function remove(id) {
-      return contents.remove(id);
-    },
-
-    /**
-     * Get all available categories.
-     * It's possible to add categories only within contents via 'add()' method
-     * @return {Array|Collection}
-     */
-    getCategories: function getCategories() {
-      return categories;
-    },
-
-    /**
-     * Return the Contents container element
-     * @return {HTMLElement}
-     */
-    getContainer: function getContainer() {
-      return contentsView.el;
-    },
-
-    /**
-     * Render contents
-     * @param  {Array} contents Contents to render, without the argument will render all global contents
-     * @param  {Object} [opts={}] Options
-     * @param  {Boolean} [opts.external] Render contents in a new container (HTMLElement will be returned)
-     * @param  {Boolean} [opts.ignoreCategories] Render contents without categories
-     * @return {HTMLElement} Rendered element
-     * @example
-     * // Render all contents (inside the global collection)
-     * contentManager.render();
-     *
-     * // Render new set of contents
-     * const contents = contentManager.getAll();
-     * const filtered = contents.filter(content => content.get('category') == 'sections')
-     *
-     * contentManager.render(filtered);
-     * // Or a new set from an array
-     * contentManager.render([
-     *  {label: 'Label text', content: '<div>Content</div>'}
-     * ]);
-     *
-     * // Back to contents from the global collection
-     * contentManager.render();
-     *
-     * // You can also render your contents outside of the main content container
-     * const newContentsEl = contentManager.render(filtered, { external: true });
-     * document.getElementById('some-id').appendChild(newContentsEl);
-     */
-    render: function render(contents) {
-      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-      var toRender = contents || this.getAll().models;
-
-      if (opts.external) {
-        return new _view_ContentsView__WEBPACK_IMPORTED_MODULE_5__["default"]({
-          collection: new _model_Contents__WEBPACK_IMPORTED_MODULE_3__["default"](toRender),
-          categories: categories
-        }, _objectSpread(_objectSpread({}, c), opts)).render().el;
-      }
-
-      if (!contentsView.rendered) {
-        contentsView.render();
-        contentsView.rendered = 1;
-      }
-
-      contentsView.updateConfig(opts);
-      contentsView.collection.reset(toRender);
-      return this.getContainer();
-    }
-  };
-});
-
-/***/ }),
-
-/***/ "./src/content_manager/model/Categories.js":
-/*!*************************************************!*\
-  !*** ./src/content_manager/model/Categories.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Category__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Category */ "./src/content_manager/model/Category.js");
-
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Collection.extend({
-  model: _Category__WEBPACK_IMPORTED_MODULE_1__["default"]
-}));
-
-/***/ }),
-
-/***/ "./src/content_manager/model/Category.js":
-/*!***********************************************!*\
-  !*** ./src/content_manager/model/Category.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Model.extend({
-  defaults: {
-    id: '',
-    label: '',
-    open: true,
-    attributes: {}
-  }
-}));
-
-/***/ }),
-
-/***/ "./src/content_manager/model/Content.js":
-/*!**********************************************!*\
-  !*** ./src/content_manager/model/Content.js ***!
-  \**********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Category__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Category */ "./src/content_manager/model/Category.js");
-
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Model.extend({
-  defaults: {
-    // If true, triggers an 'active' event on dropped component
-    activate: 0,
-    // If true, the dropped component will be selected
-    select: 0,
-    // If true, all IDs of dropped component and its style will be changed
-    resetId: 0,
-    // Content label
-    label: '',
-    // Disable the drag of the content
-    disable: 0,
-    // HTML string for the media of the content, eg. SVG icon, image, etc.
-    media: '',
-    content: '',
-    category: '',
-    attributes: {}
-  },
-  initialize: function initialize() {
-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var category = this.get('category');
-
-    if (category) {
-      if (typeof category == 'string') {
-        var catObj = new _Category__WEBPACK_IMPORTED_MODULE_1__["default"]({
-          id: category,
-          label: category
-        });
-      }
-    }
-  }
-}));
-
-/***/ }),
-
-/***/ "./src/content_manager/model/Contents.js":
-/*!***********************************************!*\
-  !*** ./src/content_manager/model/Contents.js ***!
-  \***********************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Content__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Content */ "./src/content_manager/model/Content.js");
-
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Collection.extend({
-  model: _Content__WEBPACK_IMPORTED_MODULE_1__["default"]
-}));
-
-/***/ }),
-
-/***/ "./src/content_manager/view/CategoryView.js":
-/*!**************************************************!*\
-  !*** ./src/content_manager/view/CategoryView.js ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_1__);
-
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_1___default.a.View.extend({
-  template: Object(underscore__WEBPACK_IMPORTED_MODULE_0__["template"])("\n  <div class=\"<%= pfx %>title\">\n    <i class=\"<%= pfx %>caret-icon\"></i>\n    <%= label %>\n  </div>\n  <div class=\"<%= pfx %>contents-c\"></div>\n  "),
-  events: {},
-  initialize: function initialize() {
-    var o = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    this.config = config;
-    var pfx = config.pStylePrefix || '';
-    this.em = config.em;
-    this.pfx = pfx;
-    this.caretR = 'fa fa-caret-right';
-    this.caretD = 'fa fa-caret-down';
-    this.iconClass = "".concat(pfx, "caret-icon");
-    this.activeClass = "".concat(pfx, "open");
-    this.className = "".concat(pfx, "content-category");
-    this.events["click .".concat(pfx, "title")] = 'toggle';
-    this.listenTo(this.model, 'change:open', this.updateVisibility);
-    this.delegateEvents();
-  },
-  updateVisibility: function updateVisibility() {
-    if (this.model.get('open')) this.open();else this.close();
-  },
-  open: function open() {
-    this.el.className = "".concat(this.className, " ").concat(this.activeClass);
-    this.getIconEl().className = "".concat(this.iconClass, " ").concat(this.caretD);
-    this.getContentsEl().style.display = '';
-  },
-  close: function close() {
-    this.el.className = this.className;
-    this.getIconEl().className = "".concat(this.iconClass, " ").concat(this.caretR);
-    this.getContentsEl().style.display = 'none';
-  },
-  toggle: function toggle() {
-    var model = this.model;
-    model.set('open', !model.get('open'));
-  },
-  getIconEl: function getIconEl() {
-    if (!this.iconEl) {
-      this.iconEl = this.el.querySelector('.' + this.iconClass);
-    }
-
-    return this.iconEl;
-  },
-  getContentsEl: function getContentsEl() {
-    if (!this.contentsEl) {
-      this.contentsEl = this.el.querySelector('.' + this.pfx + 'contents-c');
-    }
-
-    return this.contentsEl;
-  },
-  append: function append(el) {
-    this.getContentsEl().appendChild(el);
-  },
-  render: function render() {
-    var em = this.em,
-        el = this.el,
-        $el = this.$el,
-        model = this.model;
-    var label = em.t("contentManager.categories.".concat(model.id)) || model.get('label');
-    el.innerHTML = this.template({
-      pfx: this.pfx,
-      label: label
-    });
-    el.className = this.className;
-    $el.css({
-      order: model.get('order')
-    });
-    this.updateVisibility();
-    return this;
-  }
-}));
-
-/***/ }),
-
-/***/ "./src/content_manager/view/ContentView.js":
-/*!*************************************************!*\
-  !*** ./src/content_manager/view/ContentView.js ***!
-  \*************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
-/* harmony import */ var utils_mixins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! utils/mixins */ "./src/utils/mixins.js");
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.View.extend({
-  events: {
-    click: 'handleClick',
-    mousedown: 'startDrag',
-    dragstart: 'handleDragStart',
-    drag: 'handleDrag',
-    dragend: 'handleDragEnd'
-  },
-  initialize: function initialize(o) {
-    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var model = this.model;
-    this.em = config.em;
-    this.config = config;
-    this.endDrag = this.endDrag.bind(this);
-    this.ppfx = config.pStylePrefix || '';
-    this.listenTo(model, 'destroy remove', this.remove);
-    this.listenTo(model, 'change', this.render);
-  },
-  handleClick: function handleClick() {
-    var config = this.config,
-        model = this.model,
-        em = this.em;
-    if (!config.appendOnClick) return;
-    var sorter = config.getSorter();
-    var content = model.get('content');
-    var selected = em.getSelected();
-    sorter.setDropContent(content);
-    var target, valid; // If there is a selected component, try first to append
-    // the content inside, otherwise, try to place it as a next sibling
-
-    if (selected) {
-      valid = sorter.validTarget(selected.getEl(), content);
-
-      if (valid.valid) {
-        target = selected;
-      } else {
-        var parent = selected.parent();
-        valid = sorter.validTarget(parent.getEl(), content);
-        if (valid.valid) target = parent;
-      }
-    } // If no target found yet, try to append the content to the wrapper
-
-
-    if (!target) {
-      var wrapper = em.getWrapper();
-      valid = sorter.validTarget(wrapper.getEl(), content);
-      if (valid.valid) target = wrapper;
-    }
-
-    var result = target && target.append(content)[0];
-    result && em.setSelected(result, {
-      scroll: 1
-    });
-  },
-
-  /**
-   * Start content dragging
-   * @private
-   */
-  startDrag: function startDrag(e) {
-    var config = this.config,
-        em = this.em,
-        model = this.model;
-    var disable = model.get('disable'); //Right or middel click
-
-    if (e.button !== 0 || !config.getSorter || this.el.draggable || disable) return;
-    em.refreshCanvas();
-    var sorter = config.getSorter();
-    sorter.setDragHelper(this.el, e);
-    sorter.setDropContent(this.model.get('content'));
-    sorter.startSort(this.el);
-    Object(utils_mixins__WEBPACK_IMPORTED_MODULE_2__["on"])(document, 'mouseup', this.endDrag);
-  },
-  handleDragStart: function handleDragStart(ev) {
-    var em = this.em,
-        model = this.model;
-    var content = model.get('content');
-    var isObj = Object(underscore__WEBPACK_IMPORTED_MODULE_1__["isObject"])(content);
-    var data = isObj ? JSON.stringify(content) : content;
-    em.set('dragResult'); // Note: data are not available on dragenter for security reason,
-    // we have to use dragContent as we need it for the Sorter context
-    // IE11 supports only 'text' data type
-
-    ev.dataTransfer.setData('text', data);
-    em.set('dragContent', content);
-    em.trigger('content:drag:start', model, ev);
-  },
-  handleDrag: function handleDrag(ev) {
-    this.em.trigger('content:drag', this.model, ev);
-  },
-  handleDragEnd: function handleDragEnd() {
-    var em = this.em,
-        model = this.model;
-    var result = em.get('dragResult');
-
-    if (result) {
-      var oldKey = 'activeOnRender';
-      var oldActive = result.get && result.get(oldKey);
-
-      if (model.get('activate') || oldActive) {
-        result.trigger('active');
-        result.set(oldKey, 0);
-      }
-
-      if (model.get('select')) {
-        em.setSelected(result);
-      }
-
-      if (model.get('resetId')) {
-        result.onAll(function (model) {
-          return model.resetId();
-        });
-      }
-    }
-
-    em.set({
-      dragResult: null,
-      dragContent: null
-    });
-    em.trigger('content:drag:stop', result, model);
-  },
-
-  /**
-   * Drop content
-   * @private
-   */
-  endDrag: function endDrag(e) {
-    Object(utils_mixins__WEBPACK_IMPORTED_MODULE_2__["off"])(document, 'mouseup', this.endDrag);
-    var sorter = this.config.getSorter(); // After dropping the content in the canvas the mouseup event is not yet
-    // triggerd on 'this.doc' and so clicking outside, the sorter, tries to move
-    // things (throws false positives). As this method just need to drop away
-    // the content helper I use the trick of 'moved = 0' to void those errors.
-
-    sorter.moved = 0;
-    sorter.endMove();
-  },
-  render: function render() {
-    var em = this.em,
-        el = this.el,
-        ppfx = this.ppfx,
-        model = this.model;
-    var disable = model.get('disable');
-    var attr = model.get('attributes') || {};
-    var cls = attr.class || '';
-    var className = "".concat(ppfx, "content");
-    var label = em && em.t("contentManager.labels.".concat(model.id)) || model.get('label');
-    var render = model.get('render');
-    var media = model.get('media');
-    var clsAdd = disable ? "".concat(className, "--disable") : "".concat(ppfx, "four-color-h");
-    el.className = "".concat(cls, " ").concat(className, " ").concat(ppfx, "one-bg ").concat(clsAdd).trim();
-    el.innerHTML = "\n      ".concat(media ? "<div class=\"".concat(className, "__media\">").concat(media, "</div>") : '', "\n      <div class=\"").concat(className, "-label\">").concat(label, "</div>\n    ");
-    el.title = el.textContent.trim();
-    el.setAttribute('draggable', Object(utils_mixins__WEBPACK_IMPORTED_MODULE_2__["hasDnd"])(em) && !disable ? true : false);
-    var result = render && render({
-      el: el,
-      model: model,
-      className: className,
-      prefix: ppfx
-    });
-    if (result) el.innerHTML = result;
-    return this;
-  }
-}));
-
-/***/ }),
-
-/***/ "./src/content_manager/view/ContentsView.js":
-/*!**************************************************!*\
-  !*** ./src/content_manager/view/ContentsView.js ***!
-  \**************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
-/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
-/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
-/* harmony import */ var _ContentView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ContentView */ "./src/content_manager/view/ContentView.js");
-/* harmony import */ var _CategoryView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CategoryView */ "./src/content_manager/view/CategoryView.js");
-
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_1___default.a.View.extend({
-  initialize: function initialize(opts, config) {
-    Object(underscore__WEBPACK_IMPORTED_MODULE_2__["bindAll"])(this, 'getSorter', 'onDrag', 'onDrop');
-    this.config = config || {};
-    this.categories = opts.categories || '';
-    this.renderedCategories = [];
-    var ppfx = this.config.pStylePrefix || '';
-    this.ppfx = ppfx;
-    this.noCatClass = "".concat(ppfx, "contents-no-cat");
-    this.contentContClass = "".concat(ppfx, "contents-c");
-    this.catsClass = "".concat(ppfx, "content-categories");
-    var coll = this.collection;
-    this.listenTo(coll, 'add', this.addTo);
-    this.listenTo(coll, 'reset', this.render);
-    this.em = this.config.em;
-    this.tac = 'test-tac';
-    this.grabbingCls = this.ppfx + 'grabbing';
-
-    if (this.em) {
-      this.config.getSorter = this.getSorter;
-      this.canvas = this.em.get('Canvas');
-    }
-  },
-  updateConfig: function updateConfig() {
-    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    this.config = _objectSpread(_objectSpread({}, this.config), opts);
-  },
-
-  /**
-   * Get sorter
-   * @private
-   */
-  getSorter: function getSorter() {
-    if (!this.em) return;
-
-    if (!this.sorter) {
-      var utils = this.em.get('Utils');
-      var canvas = this.canvas;
-      this.sorter = new utils.Sorter({
-        container: canvas.getBody(),
-        placer: canvas.getPlacerEl(),
-        containerSel: '*',
-        itemSel: '*',
-        pfx: this.ppfx,
-        onStart: this.onDrag,
-        onEndMove: this.onDrop,
-        onMove: this.onMove,
-        document: canvas.getFrameEl().contentDocument,
-        direction: 'a',
-        wmargin: 1,
-        nested: 1,
-        em: this.em,
-        canvasRelative: 1
-      });
-    }
-
-    return this.sorter;
-  },
-
-  /**
-   * Callback when content is on drag
-   * @private
-   */
-  onDrag: function onDrag(e) {
-    this.em.stopDefault();
-    this.em.trigger('content:drag:start', e);
-  },
-  onMove: function onMove(e) {
-    this.em.trigger('content:drag:move', e);
-  },
-
-  /**
-   * Callback when content is dropped
-   * @private
-   */
-  onDrop: function onDrop(model) {
-    var em = this.em;
-    em.runDefault();
-
-    if (model && model.get) {
-      if (model.get('activeOnRender')) {
-        model.trigger('active');
-        model.set('activeOnRender', 0);
-      }
-
-      em.trigger('content:drag:stop', model);
-    }
-  },
-
-  /**
-   * Add new model to the collection
-   * @param {Model} model
-   * @private
-   * */
-  addTo: function addTo(model) {
-    this.add(model);
-  },
-
-  /**
-   * Render new model inside the view
-   * @param {Model} model
-   * @param {Object} fragment Fragment collection
-   * @private
-   * */
-  add: function add(model, fragment) {
-    var config = this.config;
-    var frag = fragment || null;
-    var view = new _ContentView__WEBPACK_IMPORTED_MODULE_3__["default"]({
-      model: model,
-      attributes: model.get('attributes')
-    }, config);
-    var rendered = view.render().el;
-    var category = model.get('category'); // Check for categories
-
-    if (category && this.categories && !config.ignoreCategories) {
-      if (Object(underscore__WEBPACK_IMPORTED_MODULE_2__["isString"])(category)) {
-        category = {
-          id: category,
-          label: category
-        };
-      } else if (Object(underscore__WEBPACK_IMPORTED_MODULE_2__["isObject"])(category) && !category.id) {
-        category.id = category.label;
-      }
-
-      var catModel = this.categories.add(category);
-      var catId = catModel.get('id');
-      var catView = this.renderedCategories[catId];
-      var categories = this.getCategoriesEl();
-      model.set('category', catModel);
-
-      if (!catView && categories) {
-        catView = new _CategoryView__WEBPACK_IMPORTED_MODULE_4__["default"]({
-          model: catModel
-        }, this.config).render();
-        this.renderedCategories[catId] = catView;
-        categories.appendChild(catView.el);
-      }
-
-      catView && catView.append(rendered);
-      return;
-    }
-
-    if (frag) frag.appendChild(rendered);else this.append(rendered);
-  },
-  getCategoriesEl: function getCategoriesEl() {
-    if (!this.catsEl) {
-      this.catsEl = this.el.querySelector(".".concat(this.catsClass));
-    }
-
-    return this.catsEl;
-  },
-  getContentsEl: function getContentsEl() {
-    if (!this.contentsEl) {
-      this.contentsEl = this.el.querySelector(".".concat(this.noCatClass, " .").concat(this.contentContClass));
-    }
-
-    return this.contentsEl;
-  },
-  append: function append(el) {
-    var contents = this.getContentsEl();
-    contents && contents.appendChild(el);
-  },
-  render: function render() {
-    var _this = this;
-
-    var ppfx = this.ppfx;
-    var frag = document.createDocumentFragment();
-    this.catsEl = null;
-    this.contentsEl = null;
-    this.renderedCategories = [];
-    this.el.innerHTML = "\n      <div class=\"".concat(this.catsClass, "\"></div>\n      <div class=\"").concat(this.noCatClass, "\">\n        <div class=\"").concat(this.contentContClass, "\"></div>\n      </div>\n    ");
-    this.collection.each(function (model) {
-      return _this.add(model, frag);
-    });
-    this.append(frag);
-    var cls = "".concat(this.contentContClass, "s ").concat(ppfx, "one-bg ").concat(ppfx, "two-color");
-    this.$el.addClass(cls);
-    return this;
-  }
-}));
 
 /***/ }),
 
@@ -38044,7 +37165,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
       var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       em.init(this, _objectSpread(_objectSpread({}, c), opts));
-      ['I18n', 'Utils', 'Config', 'Commands', 'Keymaps', 'Modal', 'Panels', 'Canvas', 'Parser', 'CodeManager', 'UndoManager', 'RichTextEditor', 'DomComponents', ['Components', 'DomComponents'], 'LayerManager', ['Layers', 'LayerManager'], 'CssComposer', ['Css', 'CssComposer'], 'StorageManager', ['Storage', 'StorageManager'], 'AssetManager', ['Assets', 'AssetManager'], 'BlockManager', ['Blocks', 'BlockManager'], 'ContentManager', ['Contents', 'ContentManager'], 'TraitManager', ['Traits', 'TraitManager'], 'SelectorManager', ['Selectors', 'SelectorManager'], 'StyleManager', ['Styles', 'StyleManager'], 'DeviceManager', ['Devices', 'DeviceManager']].forEach(function (prop) {
+      ['I18n', 'Utils', 'Config', 'Commands', 'Keymaps', 'Modal', 'Panels', 'Canvas', 'Parser', 'CodeManager', 'UndoManager', 'RichTextEditor', 'DomComponents', ['Components', 'DomComponents'], 'LayerManager', ['Layers', 'LayerManager'], 'CssComposer', ['Css', 'CssComposer'], 'StorageManager', ['Storage', 'StorageManager'], 'AssetManager', ['Assets', 'AssetManager'], 'BlockManager', ['Blocks', 'BlockManager'], 'RowblkManager', ['Rowblks', 'RowblkManager'], 'TraitManager', ['Traits', 'TraitManager'], 'SelectorManager', ['Selectors', 'SelectorManager'], 'StyleManager', ['Styles', 'StyleManager'], 'DeviceManager', ['Devices', 'DeviceManager']].forEach(function (prop) {
         if (Array.isArray(prop)) {
           _this[prop[0]] = em.get(prop[1]);
         } else {
@@ -38582,7 +37703,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 
 backbone__WEBPACK_IMPORTED_MODULE_3___default.a.$ = cash_dom__WEBPACK_IMPORTED_MODULE_2__["default"];
-var deps = [__webpack_require__(/*! utils */ "./src/utils/index.js"), __webpack_require__(/*! i18n */ "./src/i18n/index.js"), __webpack_require__(/*! keymaps */ "./src/keymaps/index.js"), __webpack_require__(/*! undo_manager */ "./src/undo_manager/index.js"), __webpack_require__(/*! storage_manager */ "./src/storage_manager/index.js"), __webpack_require__(/*! device_manager */ "./src/device_manager/index.js"), __webpack_require__(/*! parser */ "./src/parser/index.js"), __webpack_require__(/*! selector_manager */ "./src/selector_manager/index.js"), __webpack_require__(/*! style_manager */ "./src/style_manager/index.js"), __webpack_require__(/*! modal_dialog */ "./src/modal_dialog/index.js"), __webpack_require__(/*! code_manager */ "./src/code_manager/index.js"), __webpack_require__(/*! panels */ "./src/panels/index.js"), __webpack_require__(/*! rich_text_editor */ "./src/rich_text_editor/index.js"), __webpack_require__(/*! asset_manager */ "./src/asset_manager/index.js"), __webpack_require__(/*! css_composer */ "./src/css_composer/index.js"), __webpack_require__(/*! trait_manager */ "./src/trait_manager/index.js"), __webpack_require__(/*! dom_components */ "./src/dom_components/index.js"), __webpack_require__(/*! navigator */ "./src/navigator/index.js"), __webpack_require__(/*! canvas */ "./src/canvas/index.js"), __webpack_require__(/*! commands */ "./src/commands/index.js"), __webpack_require__(/*! block_manager */ "./src/block_manager/index.js"), __webpack_require__(/*! content_manager */ "./src/content_manager/index.js")];
+var deps = [__webpack_require__(/*! utils */ "./src/utils/index.js"), __webpack_require__(/*! i18n */ "./src/i18n/index.js"), __webpack_require__(/*! keymaps */ "./src/keymaps/index.js"), __webpack_require__(/*! undo_manager */ "./src/undo_manager/index.js"), __webpack_require__(/*! storage_manager */ "./src/storage_manager/index.js"), __webpack_require__(/*! device_manager */ "./src/device_manager/index.js"), __webpack_require__(/*! parser */ "./src/parser/index.js"), __webpack_require__(/*! selector_manager */ "./src/selector_manager/index.js"), __webpack_require__(/*! style_manager */ "./src/style_manager/index.js"), __webpack_require__(/*! modal_dialog */ "./src/modal_dialog/index.js"), __webpack_require__(/*! code_manager */ "./src/code_manager/index.js"), __webpack_require__(/*! panels */ "./src/panels/index.js"), __webpack_require__(/*! rich_text_editor */ "./src/rich_text_editor/index.js"), __webpack_require__(/*! asset_manager */ "./src/asset_manager/index.js"), __webpack_require__(/*! css_composer */ "./src/css_composer/index.js"), __webpack_require__(/*! trait_manager */ "./src/trait_manager/index.js"), __webpack_require__(/*! dom_components */ "./src/dom_components/index.js"), __webpack_require__(/*! navigator */ "./src/navigator/index.js"), __webpack_require__(/*! canvas */ "./src/canvas/index.js"), __webpack_require__(/*! commands */ "./src/commands/index.js"), __webpack_require__(/*! block_manager */ "./src/block_manager/index.js"), __webpack_require__(/*! rowblk_manager */ "./src/rowblk_manager/index.js")];
 var Collection = backbone__WEBPACK_IMPORTED_MODULE_3___default.a.Collection;
 var timedInterval;
 var updateItr;
@@ -39910,7 +39031,7 @@ var defaultConfig = {
   editors: editors,
   plugins: plugins,
   // Will be replaced on build
-  version: '0.16.26',
+  version: '0.16.36',
 
   /**
    * Initialize the editor with passed options
@@ -44028,6 +43149,886 @@ var RichTextEditor = /*#__PURE__*/function () {
 }();
 
 
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/config/config.js":
+/*!*********************************************!*\
+  !*** ./src/rowblk_manager/config/config.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  // Specify the element to use as a container, string (query) or HTMLElement
+  // With the empty value, nothing will be rendered
+  appendTo: '',
+  // Append rowblks to canvas on click
+  appendOnClick: 0,
+  rowblks: []
+});
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/index.js":
+/*!*************************************!*\
+  !*** ./src/rowblk_manager/index.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
+/* harmony import */ var _config_config__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./config/config */ "./src/rowblk_manager/config/config.js");
+/* harmony import */ var _model_Rowblks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./model/Rowblks */ "./src/rowblk_manager/model/Rowblks.js");
+/* harmony import */ var _model_Categories__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./model/Categories */ "./src/rowblk_manager/model/Categories.js");
+/* harmony import */ var _view_RowblksView__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./view/RowblksView */ "./src/rowblk_manager/view/RowblksView.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+/**
+ * You can customize the initial state of the module from the editor initialization, by passing the following [Configuration Object](https://github.com/artf/grapesjs/blob/master/src/rowblk_manager/config/config.js)
+ * ```js
+ * const editor = grapesjs.init({
+ *  rowblkManager: {
+ *    // options
+ *  }
+ * })
+ * ```
+ *
+ * Once the editor is instantiated you can use its API. Before using these methods you should get the module from the instance
+ *
+ * ```js
+ * const rowblkManager = editor.RowblkManager;
+ * ```
+ * * [add](#add)
+ * * [get](#get)
+ * * [getAll](#getall)
+ * * [getAllVisible](#getallvisible)
+ * * [remove](#remove)
+ * * [getConfig](#getconfig)
+ * * [getCategories](#getcategories)
+ * * [getContainer](#getcontainer)
+ * * [render](#render)
+ *
+ * @module RowblkManager
+ */
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  var c = {};
+  var rowblks, rowblksVisible, rowblksView;
+  var categories = [];
+  return {
+    /**
+     * Name of the module
+     * @type {String}
+     * @private
+     */
+    name: 'RowblkManager',
+
+    /**
+     * Initialize module. Automatically called with a new instance of the editor
+     * @param {Object} config Configurations
+     * @return {this}
+     * @private
+     */
+    init: function init(config) {
+      c = config || {};
+      var em = c.em;
+
+      for (var name in _config_config__WEBPACK_IMPORTED_MODULE_2__["default"]) {
+        if (!(name in c)) {
+          c[name] = _config_config__WEBPACK_IMPORTED_MODULE_2__["default"][name];
+        }
+      } // Global rowblks collection
+
+
+      rowblks = new _model_Rowblks__WEBPACK_IMPORTED_MODULE_3__["default"]([]);
+      rowblksVisible = new _model_Rowblks__WEBPACK_IMPORTED_MODULE_3__["default"]([]);
+      categories = new _model_Categories__WEBPACK_IMPORTED_MODULE_4__["default"]();
+      rowblksView = new _view_RowblksView__WEBPACK_IMPORTED_MODULE_5__["default"]({
+        collection: rowblksVisible,
+        categories: categories
+      }, c); // Setup the sync between the global and public collections
+
+      rowblks.listenTo(rowblks, 'add', function (model) {
+        rowblksVisible.add(model);
+        em && em.trigger('rowblk:add', model);
+      });
+      rowblks.listenTo(rowblks, 'remove', function (model) {
+        rowblksVisible.remove(model);
+        em && em.trigger('rowblk:remove', model);
+      });
+      rowblks.listenTo(rowblks, 'reset', function (coll) {
+        rowblksVisible.reset(coll.models);
+      });
+      return this;
+    },
+
+    /**
+     * Get configuration object
+     * @return {Object}
+     */
+    getConfig: function getConfig() {
+      return c;
+    },
+
+    /**
+     * Load default rowblks if the collection is empty
+     */
+    onLoad: function onLoad() {
+      var rowblks = this.getAll();
+      !rowblks.length && rowblks.reset(c.rowblks);
+    },
+    postRender: function postRender() {
+      var elTo = this.getConfig().appendTo;
+
+      if (elTo) {
+        var el = Object(underscore__WEBPACK_IMPORTED_MODULE_1__["isElement"])(elTo) ? elTo : document.querySelector(elTo);
+        el.appendChild(this.render());
+      }
+    },
+
+    /**
+     * Add new rowblk to the collection.
+     * @param {string} id Rowblk id
+     * @param {Object} opts Options
+     * @param {string} opts.label Name of the rowblk
+     * @param {string} opts.content HTML content
+     * @param {string|Object} opts.category Group the rowblk inside a catgegory.
+     *                                      You should pass objects with id property, eg:
+     *                                      {id: 'some-uid', label: 'My category'}
+     *                                      The string will be converted in:
+     *                                      'someid' => {id: 'someid', label: 'someid'}
+     * @param {Object} [opts.attributes={}] Rowblk attributes
+     * @return {Rowblk} Added rowblk
+     * @example
+     * rowblkManager.add('h1-rowblk', {
+     *   label: 'Heading',
+     *   content: '<h1>Put your title here</h1>',
+     *   category: 'Basic',
+     *   attributes: {
+     *     title: 'Insert h1 rowblk'
+     *   }
+     * });
+     */
+    add: function add(id, opts) {
+      var obj = opts || {};
+      obj.id = id;
+      return rowblks.add(obj);
+    },
+
+    /**
+     * Return the rowblk by id
+     * @param  {string} id Rowblk id
+     * @example
+     * const rowblk = rowblkManager.get('h1-rowblk');
+     * console.log(JSON.stringify(rowblk));
+     * // {label: 'Heading', content: '<h1>Put your ...', ...}
+     */
+    get: function get(id) {
+      return rowblks.get(id);
+    },
+
+    /**
+     * Return all rowblks
+     * @return {Collection}
+     * @example
+     * const rowblks = rowblkManager.getAll();
+     * console.log(JSON.stringify(rowblks));
+     * // [{label: 'Heading', content: '<h1>Put your ...'}, ...]
+     */
+    getAll: function getAll() {
+      return rowblks;
+    },
+
+    /**
+     * Return the visible collection, which containes rowblks actually rendered
+     * @return {Collection}
+     */
+    getAllVisible: function getAllVisible() {
+      return rowblksVisible;
+    },
+
+    /**
+     * Remove a rowblk by id
+     * @param {string} id Rowblk id
+     * @return {Rowblk} Removed rowblk
+     */
+    remove: function remove(id) {
+      return rowblks.remove(id);
+    },
+
+    /**
+     * Get all available categories.
+     * It's possible to add categories only within rowblks via 'add()' method
+     * @return {Array|Collection}
+     */
+    getCategories: function getCategories() {
+      return categories;
+    },
+
+    /**
+     * Return the Rowblks container element
+     * @return {HTMLElement}
+     */
+    getContainer: function getContainer() {
+      return rowblksView.el;
+    },
+
+    /**
+     * Render rowblks
+     * @param  {Array} rowblks Rowblks to render, without the argument will render all global rowblks
+     * @param  {Object} [opts={}] Options
+     * @param  {Boolean} [opts.external] Render rowblks in a new container (HTMLElement will be returned)
+     * @param  {Boolean} [opts.ignoreCategories] Render rowblks without categories
+     * @return {HTMLElement} Rendered element
+     * @example
+     * // Render all rowblks (inside the global collection)
+     * rowblkManager.render();
+     *
+     * // Render new set of rowblks
+     * const rowblks = rowblkManager.getAll();
+     * const filtered = rowblks.filter(rowblk => rowblk.get('category') == 'sections')
+     *
+     * rowblkManager.render(filtered);
+     * // Or a new set from an array
+     * rowblkManager.render([
+     *  {label: 'Label text', content: '<div>Content</div>'}
+     * ]);
+     *
+     * // Back to rowblks from the global collection
+     * rowblkManager.render();
+     *
+     * // You can also render your rowblks outside of the main rowblk container
+     * const newRowblksEl = rowblkManager.render(filtered, { external: true });
+     * document.getElementById('some-id').appendChild(newRowblksEl);
+     */
+    render: function render(rowblks) {
+      var opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      var toRender = rowblks || this.getAll().models;
+
+      if (opts.external) {
+        return new _view_RowblksView__WEBPACK_IMPORTED_MODULE_5__["default"]({
+          collection: new _model_Rowblks__WEBPACK_IMPORTED_MODULE_3__["default"](toRender),
+          categories: categories
+        }, _objectSpread(_objectSpread({}, c), opts)).render().el;
+      }
+
+      if (!rowblksView.rendered) {
+        rowblksView.render();
+        rowblksView.rendered = 1;
+      }
+
+      rowblksView.updateConfig(opts);
+      rowblksView.collection.reset(toRender);
+      return this.getContainer();
+    }
+  };
+});
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/model/Categories.js":
+/*!************************************************!*\
+  !*** ./src/rowblk_manager/model/Categories.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Category__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Category */ "./src/rowblk_manager/model/Category.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Collection.extend({
+  model: _Category__WEBPACK_IMPORTED_MODULE_1__["default"]
+}));
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/model/Category.js":
+/*!**********************************************!*\
+  !*** ./src/rowblk_manager/model/Category.js ***!
+  \**********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Model.extend({
+  defaults: {
+    id: '',
+    label: '',
+    open: true,
+    attributes: {}
+  }
+}));
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/model/Rowblk.js":
+/*!********************************************!*\
+  !*** ./src/rowblk_manager/model/Rowblk.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Category__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Category */ "./src/rowblk_manager/model/Category.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Model.extend({
+  defaults: {
+    // If true, triggers an 'active' event on dropped component
+    activate: 0,
+    // If true, the dropped component will be selected
+    select: 0,
+    // If true, all IDs of dropped component and its style will be changed
+    resetId: 0,
+    // Rowblk label
+    label: '',
+    // Disable the drag of the rowblk
+    disable: 0,
+    // HTML string for the media of the rowblk, eg. SVG icon, image, etc.
+    media: '',
+    content: '',
+    category: '',
+    attributes: {}
+  },
+  initialize: function initialize() {
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var category = this.get('category');
+
+    if (category) {
+      if (typeof category == 'string') {
+        var catObj = new _Category__WEBPACK_IMPORTED_MODULE_1__["default"]({
+          id: category,
+          label: category
+        });
+      }
+    }
+  }
+}));
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/model/Rowblks.js":
+/*!*********************************************!*\
+  !*** ./src/rowblk_manager/model/Rowblks.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _Rowblk__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Rowblk */ "./src/rowblk_manager/model/Rowblk.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.Collection.extend({
+  model: _Rowblk__WEBPACK_IMPORTED_MODULE_1__["default"]
+}));
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/view/CategoryView.js":
+/*!*************************************************!*\
+  !*** ./src/rowblk_manager/view/CategoryView.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_1__);
+
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_1___default.a.View.extend({
+  template: Object(underscore__WEBPACK_IMPORTED_MODULE_0__["template"])("\n  <div class=\"<%= pfx %>title\">\n    <i class=\"<%= pfx %>caret-icon\"></i>\n    <%= label %>\n  </div>\n  <div class=\"<%= pfx %>rowblks-c\"></div>\n  "),
+  events: {},
+  initialize: function initialize() {
+    var o = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    this.config = config;
+    var pfx = config.pStylePrefix || '';
+    this.em = config.em;
+    this.pfx = pfx;
+    this.caretR = 'fa fa-caret-right';
+    this.caretD = 'fa fa-caret-down';
+    this.iconClass = "".concat(pfx, "caret-icon");
+    this.activeClass = "".concat(pfx, "open");
+    this.className = "".concat(pfx, "rowblk-category");
+    this.events["click .".concat(pfx, "title")] = 'toggle';
+    this.listenTo(this.model, 'change:open', this.updateVisibility);
+    this.delegateEvents();
+  },
+  updateVisibility: function updateVisibility() {
+    if (this.model.get('open')) this.open();else this.close();
+  },
+  open: function open() {
+    this.el.className = "".concat(this.className, " ").concat(this.activeClass);
+    this.getIconEl().className = "".concat(this.iconClass, " ").concat(this.caretD);
+    this.getRowblksEl().style.display = '';
+  },
+  close: function close() {
+    this.el.className = this.className;
+    this.getIconEl().className = "".concat(this.iconClass, " ").concat(this.caretR);
+    this.getRowblksEl().style.display = 'none';
+  },
+  toggle: function toggle() {
+    var model = this.model;
+    model.set('open', !model.get('open'));
+  },
+  getIconEl: function getIconEl() {
+    if (!this.iconEl) {
+      this.iconEl = this.el.querySelector('.' + this.iconClass);
+    }
+
+    return this.iconEl;
+  },
+  getRowblksEl: function getRowblksEl() {
+    if (!this.rowblksEl) {
+      this.rowblksEl = this.el.querySelector('.' + this.pfx + 'rowblks-c');
+    }
+
+    return this.rowblksEl;
+  },
+  append: function append(el) {
+    this.getRowblksEl().appendChild(el);
+  },
+  render: function render() {
+    var em = this.em,
+        el = this.el,
+        $el = this.$el,
+        model = this.model;
+    var label = em.t("rowblkManager.categories.".concat(model.id)) || model.get('label');
+    el.innerHTML = this.template({
+      pfx: this.pfx,
+      label: label
+    });
+    el.className = this.className;
+    $el.css({
+      order: model.get('order')
+    });
+    this.updateVisibility();
+    return this;
+  }
+}));
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/view/RowblkView.js":
+/*!***********************************************!*\
+  !*** ./src/rowblk_manager/view/RowblkView.js ***!
+  \***********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
+/* harmony import */ var utils_mixins__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! utils/mixins */ "./src/utils/mixins.js");
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_0___default.a.View.extend({
+  events: {
+    click: 'handleClick',
+    mousedown: 'startDrag',
+    dragstart: 'handleDragStart',
+    drag: 'handleDrag',
+    dragend: 'handleDragEnd'
+  },
+  initialize: function initialize(o) {
+    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var model = this.model;
+    this.em = config.em;
+    this.config = config;
+    this.endDrag = this.endDrag.bind(this);
+    this.ppfx = config.pStylePrefix || '';
+    this.listenTo(model, 'destroy remove', this.remove);
+    this.listenTo(model, 'change', this.render);
+  },
+  handleClick: function handleClick() {
+    var config = this.config,
+        model = this.model,
+        em = this.em;
+    if (!config.appendOnClick) return;
+    var sorter = config.getSorter();
+    var content = model.get('content');
+    var selected = em.getSelected();
+    sorter.setDropContent(content);
+    var target, valid; // If there is a selected component, try first to append
+    // the rowblk inside, otherwise, try to place it as a next sibling
+
+    if (selected) {
+      valid = sorter.validTarget(selected.getEl(), content);
+
+      if (valid.valid) {
+        target = selected;
+      } else {
+        var parent = selected.parent();
+        valid = sorter.validTarget(parent.getEl(), content);
+        if (valid.valid) target = parent;
+      }
+    } // If no target found yet, try to append the rowblk to the wrapper
+
+
+    if (!target) {
+      var wrapper = em.getWrapper();
+      valid = sorter.validTarget(wrapper.getEl(), content);
+      if (valid.valid) target = wrapper;
+    }
+
+    var result = target && target.append(content)[0];
+    result && em.setSelected(result, {
+      scroll: 1
+    });
+  },
+
+  /**
+   * Start rowblk dragging
+   * @private
+   */
+  startDrag: function startDrag(e) {
+    var config = this.config,
+        em = this.em,
+        model = this.model;
+    var disable = model.get('disable'); //Right or middel click
+
+    if (e.button !== 0 || !config.getSorter || this.el.draggable || disable) return;
+    em.refreshCanvas();
+    var sorter = config.getSorter();
+    sorter.setDragHelper(this.el, e);
+    sorter.setDropContent(this.model.get('content'));
+    sorter.startSort(this.el);
+    Object(utils_mixins__WEBPACK_IMPORTED_MODULE_2__["on"])(document, 'mouseup', this.endDrag);
+  },
+  handleDragStart: function handleDragStart(ev) {
+    var em = this.em,
+        model = this.model;
+    var content = model.get('content');
+    var isObj = Object(underscore__WEBPACK_IMPORTED_MODULE_1__["isObject"])(content);
+    var data = isObj ? JSON.stringify(content) : content;
+    em.set('dragResult'); // Note: data are not available on dragenter for security reason,
+    // we have to use dragContent as we need it for the Sorter context
+    // IE11 supports only 'text' data type
+
+    ev.dataTransfer.setData('text', data);
+    em.set('dragContent', content);
+    em.trigger('rowblk:drag:start', model, ev);
+  },
+  handleDrag: function handleDrag(ev) {
+    this.em.trigger('rowblk:drag', this.model, ev);
+  },
+  handleDragEnd: function handleDragEnd() {
+    var em = this.em,
+        model = this.model;
+    var result = em.get('dragResult');
+
+    if (result) {
+      var oldKey = 'activeOnRender';
+      var oldActive = result.get && result.get(oldKey);
+
+      if (model.get('activate') || oldActive) {
+        result.trigger('active');
+        result.set(oldKey, 0);
+      }
+
+      if (model.get('select')) {
+        em.setSelected(result);
+      }
+
+      if (model.get('resetId')) {
+        result.onAll(function (model) {
+          return model.resetId();
+        });
+      }
+    }
+
+    em.set({
+      dragResult: null,
+      dragContent: null
+    });
+    em.trigger('rowblk:drag:stop', result, model);
+  },
+
+  /**
+   * Drop rowblk
+   * @private
+   */
+  endDrag: function endDrag(e) {
+    Object(utils_mixins__WEBPACK_IMPORTED_MODULE_2__["off"])(document, 'mouseup', this.endDrag);
+    var sorter = this.config.getSorter(); // After dropping the rowblk in the canvas the mouseup event is not yet
+    // triggerd on 'this.doc' and so clicking outside, the sorter, tries to move
+    // things (throws false positives). As this method just need to drop away
+    // the rowblk helper I use the trick of 'moved = 0' to void those errors.
+
+    sorter.moved = 0;
+    sorter.endMove();
+  },
+  render: function render() {
+    var em = this.em,
+        el = this.el,
+        ppfx = this.ppfx,
+        model = this.model;
+    var disable = model.get('disable');
+    var attr = model.get('attributes') || {};
+    var cls = attr.class || '';
+    var className = "".concat(ppfx, "rowblk");
+    var label = em && em.t("rowblkManager.labels.".concat(model.id)) || model.get('label');
+    var render = model.get('render');
+    var media = model.get('media');
+    var clsAdd = disable ? "".concat(className, "--disable") : "".concat(ppfx, "four-color-h");
+    el.className = "".concat(cls, " ").concat(className, " ").concat(ppfx, "one-bg ").concat(clsAdd).trim();
+    el.innerHTML = "\n      ".concat(media ? "<div class=\"".concat(className, "__media\">").concat(media, "</div>") : '', "\n      <div class=\"").concat(className, "-label\">").concat(label, "</div>\n    ");
+    el.title = el.textContent.trim();
+    el.setAttribute('draggable', Object(utils_mixins__WEBPACK_IMPORTED_MODULE_2__["hasDnd"])(em) && !disable ? true : false);
+    var result = render && render({
+      el: el,
+      model: model,
+      className: className,
+      prefix: ppfx
+    });
+    if (result) el.innerHTML = result;
+    return this;
+  }
+}));
+
+/***/ }),
+
+/***/ "./src/rowblk_manager/view/RowblksView.js":
+/*!************************************************!*\
+  !*** ./src/rowblk_manager/view/RowblksView.js ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! backbone */ "./node_modules/backbone/backbone.js");
+/* harmony import */ var backbone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(backbone__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var underscore__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! underscore */ "./node_modules/underscore/modules/index-all.js");
+/* harmony import */ var _RowblkView__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./RowblkView */ "./src/rowblk_manager/view/RowblkView.js");
+/* harmony import */ var _CategoryView__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./CategoryView */ "./src/rowblk_manager/view/CategoryView.js");
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = (backbone__WEBPACK_IMPORTED_MODULE_1___default.a.View.extend({
+  initialize: function initialize(opts, config) {
+    Object(underscore__WEBPACK_IMPORTED_MODULE_2__["bindAll"])(this, 'getSorter', 'onDrag', 'onDrop');
+    this.config = config || {};
+    this.categories = opts.categories || '';
+    this.renderedCategories = [];
+    var ppfx = this.config.pStylePrefix || '';
+    this.ppfx = ppfx;
+    this.noCatClass = "".concat(ppfx, "rowblks-no-cat");
+    this.rowblkContClass = "".concat(ppfx, "rowblks-c");
+    this.catsClass = "".concat(ppfx, "rowblk-categories");
+    var coll = this.collection;
+    this.listenTo(coll, 'add', this.addTo);
+    this.listenTo(coll, 'reset', this.render);
+    this.em = this.config.em;
+    this.tac = 'test-tac';
+    this.grabbingCls = this.ppfx + 'grabbing';
+
+    if (this.em) {
+      this.config.getSorter = this.getSorter;
+      this.canvas = this.em.get('Canvas');
+    }
+  },
+  updateConfig: function updateConfig() {
+    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+    this.config = _objectSpread(_objectSpread({}, this.config), opts);
+  },
+
+  /**
+   * Get sorter
+   * @private
+   */
+  getSorter: function getSorter() {
+    if (!this.em) return;
+
+    if (!this.sorter) {
+      var utils = this.em.get('Utils');
+      var canvas = this.canvas;
+      this.sorter = new utils.Sorter({
+        container: canvas.getBody(),
+        placer: canvas.getPlacerEl(),
+        containerSel: '*',
+        itemSel: '*',
+        pfx: this.ppfx,
+        onStart: this.onDrag,
+        onEndMove: this.onDrop,
+        onMove: this.onMove,
+        document: canvas.getFrameEl().contentDocument,
+        direction: 'a',
+        wmargin: 1,
+        nested: 1,
+        em: this.em,
+        canvasRelative: 1
+      });
+    }
+
+    return this.sorter;
+  },
+
+  /**
+   * Callback when rowblk is on drag
+   * @private
+   */
+  onDrag: function onDrag(e) {
+    this.em.stopDefault();
+    this.em.trigger('rowblk:drag:start', e);
+  },
+  onMove: function onMove(e) {
+    this.em.trigger('rowblk:drag:move', e);
+  },
+
+  /**
+   * Callback when rowblk is dropped
+   * @private
+   */
+  onDrop: function onDrop(model) {
+    var em = this.em;
+    em.runDefault();
+
+    if (model && model.get) {
+      if (model.get('activeOnRender')) {
+        model.trigger('active');
+        model.set('activeOnRender', 0);
+      }
+
+      em.trigger('rowblk:drag:stop', model);
+    }
+  },
+
+  /**
+   * Add new model to the collection
+   * @param {Model} model
+   * @private
+   * */
+  addTo: function addTo(model) {
+    this.add(model);
+  },
+
+  /**
+   * Render new model inside the view
+   * @param {Model} model
+   * @param {Object} fragment Fragment collection
+   * @private
+   * */
+  add: function add(model, fragment) {
+    var config = this.config;
+    var frag = fragment || null;
+    var view = new _RowblkView__WEBPACK_IMPORTED_MODULE_3__["default"]({
+      model: model,
+      attributes: model.get('attributes')
+    }, config);
+    var rendered = view.render().el;
+    var category = model.get('category'); // Check for categories
+
+    if (category && this.categories && !config.ignoreCategories) {
+      if (Object(underscore__WEBPACK_IMPORTED_MODULE_2__["isString"])(category)) {
+        category = {
+          id: category,
+          label: category
+        };
+      } else if (Object(underscore__WEBPACK_IMPORTED_MODULE_2__["isObject"])(category) && !category.id) {
+        category.id = category.label;
+      }
+
+      var catModel = this.categories.add(category);
+      var catId = catModel.get('id');
+      var catView = this.renderedCategories[catId];
+      var categories = this.getCategoriesEl();
+      model.set('category', catModel);
+
+      if (!catView && categories) {
+        catView = new _CategoryView__WEBPACK_IMPORTED_MODULE_4__["default"]({
+          model: catModel
+        }, this.config).render();
+        this.renderedCategories[catId] = catView;
+        categories.appendChild(catView.el);
+      }
+
+      catView && catView.append(rendered);
+      return;
+    }
+
+    if (frag) frag.appendChild(rendered);else this.append(rendered);
+  },
+  getCategoriesEl: function getCategoriesEl() {
+    if (!this.catsEl) {
+      this.catsEl = this.el.querySelector(".".concat(this.catsClass));
+    }
+
+    return this.catsEl;
+  },
+  getRowblksEl: function getRowblksEl() {
+    if (!this.rowblksEl) {
+      this.rowblksEl = this.el.querySelector(".".concat(this.noCatClass, " .").concat(this.rowblkContClass));
+    }
+
+    return this.rowblksEl;
+  },
+  append: function append(el) {
+    var rowblks = this.getRowblksEl();
+    rowblks && rowblks.appendChild(el);
+  },
+  render: function render() {
+    var _this = this;
+
+    var ppfx = this.ppfx;
+    var frag = document.createDocumentFragment();
+    this.catsEl = null;
+    this.rowblksEl = null;
+    this.renderedCategories = [];
+    this.el.innerHTML = "\n      <div class=\"".concat(this.catsClass, "\"></div>\n      <div class=\"").concat(this.noCatClass, "\">\n        <div class=\"").concat(this.rowblkContClass, "\"></div>\n      </div>\n    ");
+    this.collection.each(function (model) {
+      return _this.add(model, frag);
+    });
+    this.append(frag);
+    var cls = "".concat(this.rowblkContClass, "s ").concat(ppfx, "one-bg ").concat(ppfx, "two-color");
+    this.$el.addClass(cls);
+    return this;
+  }
+}));
 
 /***/ }),
 
